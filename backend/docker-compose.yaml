@@ -1,0 +1,73 @@
+services:
+  db:
+    image: postgres:16.6-alpine
+    container_name: belson_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT:-5431}:5432"
+    networks:
+      - beslon_network
+
+  redis:
+    image: redis:7.4-alpine
+    container_name: belson_redis
+    ports:
+      - "${REDIS_PORT:-6377}:6379"
+    networks:
+      - beslon_network
+
+  backend:
+    container_name: belson_backend
+    build: .
+    command: sh -c " python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - beslon_network
+
+  celery_worker:
+    build: .
+    command: celery -A config worker -l INFO
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - beslon_network
+
+  celery_beat:
+    build: .
+    command: celery -A config beat -l INFO
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - beslon_network
+
+volumes:
+  postgres_data:
+
+networks:
+  beslon_network:
+    driver: bridge
