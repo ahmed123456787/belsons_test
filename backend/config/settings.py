@@ -66,21 +66,19 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 
-# Celery Beat Schedule (example scheduled tasks)
-from celery.schedules import crontab
+
 
 CELERY_BEAT_SCHEDULE = {
     'sample-task-every-minute': {
         'task': 'apps.news.tasks.sample_task',
-        'schedule': 10.0,  # Every 60 seconds
+        'schedule': 10,
     },
-    'sample-task-every-day-midnight': {
-        'task': 'apps.news.tasks.daily_task',
-        'schedule': crontab(hour=0, minute=0),  # Every day at midnight
-    },
+    'fetch-sources-every-week': {
+        'task': 'apps.news.tasks.fetch_sources_task',
+        'schedule': 120.0 * 60.0 * 24.0 * 7.0,  # every week
+    }, 
+
 }
-
-
 
 
 
