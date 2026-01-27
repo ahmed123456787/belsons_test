@@ -34,7 +34,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+ 
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'apps.news'
+    'apps.news',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -64,23 +65,20 @@ CELERY_RESULT_BACKEND = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
+CELERY_TIMEZONE = 'UTC'   
 
 
 
 CELERY_BEAT_SCHEDULE = {
-    'sample-task-every-minute': {
-        'task': 'apps.news.tasks.sample_task',
-        'schedule': 10,
-    },
     'fetch-sources-every-week': {
         'task': 'apps.news.tasks.fetch_sources_task',
         'schedule': 120.0 * 60.0 * 24.0 * 7.0,  # every week
     }, 
-
+    'fetch-latest-news-every-hour': {
+        'task': 'apps.news.tasks.fetch_latest_news_task',
+        'schedule': 60.0 * 60.0,  # every hour
+    },
 }
-
-
 
 
 ROOT_URLCONF = 'config.urls'

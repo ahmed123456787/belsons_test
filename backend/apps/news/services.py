@@ -1,9 +1,9 @@
-from ..fetch_news import fetch_sources
+from ..fetch_news import fetch_sources, fetch_latest_news
 from .models import Source, Category, Language, Country
 from django.db import transaction
 
     
-def save_api_res_to_sources() -> None:
+def save_api_res_to_db() -> None:
         """
         Fetches news sources from an external API and saves them to the database.
         """
@@ -35,3 +35,10 @@ def save_api_res_to_sources() -> None:
         except Exception as e:
             print(f"Error saving sources: {e}")
             return
+        
+
+def save_newsapi_to_db():
+    """
+    Fetches news sources from NewsAPI and saves them to the database.
+    """
+    fetch_latest_news()
