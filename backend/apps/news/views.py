@@ -97,13 +97,19 @@ class NewsArticleListView(ListAPIView):
                 except ValueError:
                     return Response({'error': 'days must be a positive integer'}, status=status.HTTP_400_BAD_REQUEST)
 
+            # Apply ordering filters
+            queryset = self.filter_queryset(queryset)
+            
             page = self.paginate_queryset(queryset)
             if page is not None:
                 serializer = self.get_serializer(page, many=True)
                 return self.get_paginated_response(serializer.data)
 
             serializer = self.get_serializer(queryset, many=True)
-            return Response(serializer.data)
+            return Response({
+                'count': queryset.count(),
+                'results': serializer.data
+            })
 
         except Exception as e:
             logger.error(f"Error listing articles: {str(e)}", exc_info=True)

@@ -1,9 +1,10 @@
 from ..fetch_news import fetch_sources, fetch_latest_news
-from .models import Source, Category, Language, Country
+from .models import Source, Category, Language, Country, NewsArticle
 from django.db import transaction
+from datetime import datetime
 
     
-def save_api_res_to_db() -> None:
+def save_sources_to_db() -> None:
         """
         Fetches news sources from an external API and saves them to the database.
         """
@@ -39,6 +40,64 @@ def save_api_res_to_db() -> None:
 
 def save_newsapi_to_db():
     """
-    Fetches news sources from NewsAPI and saves them to the database.
+    Fetches news articles from NewsAPI and saves them to the database.
     """
-    fetch_latest_news()
+    try:
+        result = fetch_latest_news()
+        articles = result.get('articles', [])
+        
+        if not articles:
+            print("No articles fetched from NewsAPI")
+            return
+        
+        with transaction.atomic():
+            for article_data in articles:
+                try:
+                    # Skip articles without required fields
+                    if not article_data.get('url') or not article_data.get('title'):
+                        continue
+                    
+                    # Try to get the source
+                    source = None
+                    source_name = article_data.get('source', {}).get('name')
+                    if source_name:
+                        source = Source.objects.filter(name=source_name).first()
+                    
+                    # Parse published date
+                    published_at = article_data.get('publishedAt')
+                    if published_at and isinstance(published_at, str):
+                        try:
+                            published_at = datetime.fromisoformat(published_at.replace('Z', '+00:00'))
+                        except:
+                            continue
+                    else:
+                        continue
+                    
+                    # Create or update the article
+                    article, created = NewsArticle.objects.get_or_create(
+                        url=article_data.get('url'),
+                        defaults={
+                            'title': article_data.get('title', ''),
+                            'description': article_data.get('description', ''),
+                            'image_url': article_data.get('urlToImage', ''),
+                            'published_at': published_at,
+                            'source': source,
+                        }
+                    )
+                    
+                    if created:
+                        # Auto-populate denormalized fields from source
+                        if source:
+                            article.category = source.category
+                            article.language = source.language
+                            article.country = source.country
+                            article.save()
+                
+                except Exception as e:
+                    print(f"Error saving article: {e}")
+                    continue
+        
+        print(f"Successfully saved {len(articles)} articles")
+    except Exception as e:
+        print(f"Error in save_newsapi_to_db: {e}")
+        return

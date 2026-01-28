@@ -5,8 +5,6 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 
-
-
 def fetch_sources ():
     """
     Fetch news sources from NewsAPI.
@@ -19,13 +17,20 @@ def fetch_sources ():
         logger.info(f"Fetched {len(sources)} sources from NewsAPI.")
         return sources
     except Exception as e:
+        logger.error(f"Error fetching sources: {e}")
         return []
+ 
 
 
-
-def fetch_latest_news(query: str, **kwargs):
+def fetch_latest_news(query: str = 'news', **kwargs):
     """
     Fetch latest news headlines.
     """
-    news_api = NewsApiClient(api_key=os.getenv("NEWS_API_KEY"))
-    return news_api.get_everything(q=query, **kwargs)
+    try:
+        news_api = NewsApiClient(api_key=os.getenv("NEWS_API_KEY"))
+        result = news_api.get_everything(q=query, **kwargs)
+        logger.info(f"Fetched news articles with query '{query}'")
+        return result
+    except Exception as e:
+        logger.error(f"Error fetching latest news: {e}")
+        return {'articles': [], 'totalResults': 0}

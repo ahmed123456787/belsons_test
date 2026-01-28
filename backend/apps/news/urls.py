@@ -10,6 +10,6 @@ urlpatterns = [
     path('countries/', CountryListView.as_view(), name='country-list'),
     path('categories/', CategoryListView.as_view(), name='category-list'),
     path('languages/', LanguageListView.as_view(), name='language-list'),
-    path('articles/', NewsArticleListView.as_view(), name='newsarticle-list'),
-    path('articles/<int:pk>/', NewsArticleRetrieveView.as_view(), name='newsarticle-detail'),
+    path('news/', NewsArticleListView.as_view(), name='newsarticle-list'),
+    path('news/<int:pk>/', NewsArticleRetrieveView.as_view(), name='newsarticle-detail'),
 ]

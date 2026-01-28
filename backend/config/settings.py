@@ -43,12 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
     'rest_framework',
     'apps.news',
     'django_filters'
-]
+]  
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,6 +81,10 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 60.0 * 60.0,  # every hour
     },
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+]
 
 
 ROOT_URLCONF = 'config.urls'
