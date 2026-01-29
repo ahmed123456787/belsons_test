@@ -160,10 +160,10 @@ SECRET_KEY=your-super-secret-key-change-this-in-production
 POSTGRES_DB=news_db
 POSTGRES_USER=news_user
 POSTGRES_PASSWORD=secure_password_here
-POSTGRES_HOST=postgres
+POSTGRES_HOST=db
 
 # NewsAPI
-NEWSAPI_KEY=your_newsapi_key_here
+NEWS_API_KEY=your_newsapi_key_here
 
 # Redis
 REDIS_URL=redis://redis:6379/0

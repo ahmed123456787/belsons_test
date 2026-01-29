@@ -127,7 +127,7 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULE = {
     'fetch-sources-every-week': {
         'task': 'apps.news.tasks.fetch_sources_task',
-        'schedule': 120.0 * 60.0 * 24.0 * 7.0,  # every week
+        'schedule': 60 * 60  * 24 * 7,  # every week
     },
     'fetch-latest-news-every-hour': {
         'task': 'apps.news.tasks.fetch_latest_news_task',
