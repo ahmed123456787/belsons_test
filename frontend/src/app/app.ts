@@ -1,10 +1,9 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
 import { NewsListComponent } from './components/news-list/news-list';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NewsListComponent],
+  imports: [NewsListComponent],
   templateUrl: './app.html',
 })
 export class App {}

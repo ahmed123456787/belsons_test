@@ -2,16 +2,15 @@ export interface NewsArticle {
   id?: number;
   source: {
     id: string | null;
-    name: string;
+    name?: string;
   };
-  author: string | null;
   title: string;
   description: string;
   url: string;
-  urlToImage: string | null;
-  publishedAt: string;
+  image_url: string | null;
+  published_at: string;
   content: string;
-  category?: string;
+  category_name?: string;
   country?: string;
 }
 
@@ -29,7 +28,6 @@ export interface FilterParams {
   query?: string;
   page?: number;
 }
-
 
 export interface Category {
   id: number;

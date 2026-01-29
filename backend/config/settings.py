@@ -8,7 +8,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
-"""
+""" 
 
 from pathlib import Path
 import os 
@@ -78,7 +78,7 @@ CELERY_BEAT_SCHEDULE = {
     }, 
     'fetch-latest-news-every-hour': {
         'task': 'apps.news.tasks.fetch_latest_news_task',
-        'schedule': 60.0 * 60.0,  # every hour
+        'schedule': 60 * 60,  # every hour
     },
 }
 

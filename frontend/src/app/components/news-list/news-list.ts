@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs/operators';
 import { NewsService } from '../../services/news';
 import { NewsArticle, FilterParams } from '../../models/global.models';
 import { PaginationComponent } from '../pagination/pagination';
@@ -30,7 +31,10 @@ export class NewsListComponent implements OnInit {
 
   filters: FilterParams = {};
 
-  constructor(private newsService: NewsService) {}
+  constructor(
+    private newsService: NewsService,
+    private cdRef: ChangeDetectorRef // Add this
+  ) {}
 
   ngOnInit(): void {
     this.loadNews();
@@ -39,29 +43,39 @@ export class NewsListComponent implements OnInit {
   loadNews(): void {
     this.loading = true;
     this.error = '';
+    this.cdRef.detectChanges(); // Force update for loading start
 
     const params: FilterParams = {
       ...this.filters,
       page: this.currentPage,
     };
 
-    this.newsService.getNews(params).subscribe({
-      next: (response) => {
-        this.articles = response.results || [];
-        this.totalItems = response.count || 0;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Failed to load news. Please try again.';
-        this.articles = [];
-        this.totalItems = 0;
-        this.loading = false;
-        console.error('Error loading news:', err);
-      },
-      complete: () => {
-        this.loading = false;
-      },
-    });
+    this.newsService
+      .getNews(params)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.cdRef.detectChanges(); // Force update after loading ends
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          if (response) {
+            this.articles = response.results || [];
+            this.totalItems = response.count || 0;
+          } else {
+            this.articles = [];
+            this.totalItems = 0;
+          }
+          this.cdRef.detectChanges(); // Force update after data is set
+        },
+        error: (err) => {
+          this.error = 'Failed to load news. Please try again.';
+          this.articles = [];
+          this.totalItems = 0;
+          console.error('Error loading news:', err);
+        },
+      });
   }
 
   onSearch(query: string): void {

@@ -29,7 +29,10 @@ export class FilterBarComponent implements OnInit {
   loadFilters(): void {
     this.newsService.getCategories().subscribe((data) => (this.categories = data));
     this.newsService.getCountries().subscribe((data) => (this.countries = data));
-    this.newsService.getSources().subscribe((data) => (this.sources = data));
+    this.newsService.getSources().subscribe((data) => {
+      this.sources = data;
+      console.log(this.sources);
+    });
   }
 
   onFilterChange(): void {

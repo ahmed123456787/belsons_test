@@ -16,10 +16,10 @@
     <!-- Source and Date -->
     <div class="flex items-center justify-between mb-2">
       <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">
-        {{ article.source.name }}
+        {{ article.source?.name || 'None' }}
       </span>
       <span class="text-xs text-gray-500">
-        {{ formatDate(article.publishedAt) }}
+        {{ formatDate(article.published_at) }}
       </span>
     </div>
 
@@ -42,7 +42,7 @@
           clip-rule="evenodd"
         />
       </svg>
-      <span>{{ article.author || 'Unknown Author' }}</span>
+      <span>{{ article.category_name || 'Unknown Category' }}</span>
     </div>
   </div>
 </div>

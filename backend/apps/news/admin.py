@@ -21,7 +21,7 @@ class CategoryAdmin(ReadOnlyAdmin):
     search_fields = ("name",)
 
 
-@admin.register(Language)
+@admin.register(Language) 
 class LanguageAdmin(ReadOnlyAdmin):
     list_display = ("code",)
     search_fields = ("code",)

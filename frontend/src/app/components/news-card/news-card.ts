@@ -16,15 +16,15 @@ export class NewsCardComponent {
   }
 
   getImageUrl(): string {
-    return this.article.urlToImage || 'https://via.placeholder.com/400x200?text=No+Image';
+    return this.article.image_url || 'https://via.placeholder.com/400x200?text=No+Image';
   }
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'short',
-      day: 'numeric',
+      month: 'long', // "January"
+      day: 'numeric', // "29"
     });
   }
 }

@@ -65,7 +65,7 @@ class Source(models.Model):
     source_id = models.CharField(max_length=100, unique=True)  # e.g., "bbc-news"
     name = models.CharField(max_length=100)  # e.g., "BBC News"
     description = models.TextField(null=True, blank=True)
-    url = models.URLField(null=True, blank=True)
+    url = models.URLField(max_length=2000,null=True, blank=True)
     category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,blank=True,related_name='sources')
     language = models.ForeignKey(
         Language,
@@ -94,6 +94,7 @@ class NewsArticle(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     url = models.URLField(unique=True)
+    content = models.TextField(null=True, blank=True)
     image_url = models.URLField(null=True, blank=True)
     published_at = models.DateTimeField()
     
