@@ -62,8 +62,8 @@ class Source(models.Model):
     Represents a news source from NewsAPI.
     A source has its own category, language, and country.
     """
-    source_id = models.CharField(max_length=100, unique=True)  # e.g., "bbc-news"
-    name = models.CharField(max_length=100)  # e.g., "BBC News"
+    source_id = models.CharField(max_length=100, unique=True)  
+    name = models.CharField(max_length=100)  
     description = models.TextField(null=True, blank=True)
     url = models.URLField(max_length=2000,null=True, blank=True)
     category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,blank=True,related_name='sources')
@@ -144,7 +144,6 @@ class NewsArticle(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        # Auto-populate denormalized fields from source
         if self.source:
             self.category = self.source.category
             self.language = self.source.language

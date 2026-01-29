@@ -64,7 +64,6 @@ Belsons News is a comprehensive news aggregation platform that:
 belsons_test/
 ├── README.md                          # This file
 ├── API_DOCUMENTATION.md               # Detailed API documentation
-├── entrypoint.sh                      # Script to start the project
 │
 ├── backend/                           # Django Backend
 │   ├── manage.py                      # Django management script
@@ -462,28 +461,6 @@ REDIS_URL=redis://redis:6379/0         # 'redis' for Docker, 'localhost' for loc
 # Celery Configuration
 CELERY_BROKER_URL=redis://redis:6379/0
 CELERY_RESULT_BACKEND=redis://redis:6379/0
-```
-
----
-
-## 📊 Using the Entrypoint Script
-
-An automated entrypoint script is available for setting up and running the entire project:
-
-```bash
-chmod +x entrypoint.sh
-./entrypoint.sh start
-```
-
-### Available Commands
-
-```bash
-./entrypoint.sh start      # Build and start all services
-./entrypoint.sh stop       # Stop all running services
-./entrypoint.sh restart    # Restart all services
-./entrypoint.sh logs       # View real-time logs
-./entrypoint.sh clean      # Remove all containers and volumes
-./entrypoint.sh help       # Show help message
 ```
 
 ---
