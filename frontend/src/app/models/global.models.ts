@@ -41,23 +41,15 @@ export interface Country {
 }
 
 export interface Source {
-  count: number;
-  total_pages: number;
-  current_page: number;
-  page_size: number;
-  results: [
-    {
-      id: number;
-      source_id: string;
-      name: string;
-      description: string;
-      url: string;
-      category: {
-        id: number;
-        name: string;
-      };
-      language: string;
-      country: string;
-    }
-  ];
+  id: number;
+  source_id: string;
+  name: string;
+  description: string;
+  url: string;
+  category: {
+    id: number;
+    name: string;
+  };
+  language: string;
+  country: string;
 }
