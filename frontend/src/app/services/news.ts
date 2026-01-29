@@ -18,7 +18,7 @@ export class NewsService {
     if (filters.category) params = params.set('category', filters.category);
     if (filters.country) params = params.set('country', filters.country);
     if (filters.source) params = params.set('source', filters.source);
-    if (filters.query) params = params.set('query', filters.query);
+    if (filters.query) params = params.set('search', filters.query);
     if (filters.page) params = params.set('page', filters.page.toString());
 
     return this.http.get<NewsResponse>(`${this.apiUrl}/news/`, { params });
