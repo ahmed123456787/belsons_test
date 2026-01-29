@@ -1,48 +1,132 @@
 <div
   (click)="openArticle()"
-  class="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer overflow-hidden h-full flex flex-col"
+  class="group bg-linear-to-br from-white to-gray-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden h-full flex flex-col border border-gray-100 hover:border-blue-100 hover:-translate-y-1 transform transition-transform duration-300"
 >
-  <!-- Image -->
-  <div class="h-48 overflow-hidden bg-gray-200">
-    <img
-      [src]="getImageUrl()"
-      [alt]="article.title"
-      class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-    />
+  <!-- Image Container with Gradient Overlay -->
+  <div class="relative h-56 overflow-hidden bg-linear-to-br from-blue-50 to-purple-50">
+    <!-- Image with Parallax Effect -->
+    <div class="absolute inset-0 overflow-hidden">
+      <img
+        [src]="getImageUrl()"
+        [alt]="article.title"
+        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+        (error)="article.image_url = 'assets/images/news-placeholder.svg'"
+      />
+      <!-- Gradient Overlay -->
+      <div
+        class="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent"
+      ></div>
+    </div>
+
+    <!-- Top Badges -->
+    <div class="absolute top-4 left-4 right-4 flex justify-between items-start z-10">
+      <!-- Breaking News Badge -->
+
+      <!-- Source Badge -->
+      <span
+        class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-semibold rounded-full shadow-md"
+      >
+        {{ article.source?.name || 'News Source' }}
+      </span>
+    </div>
+
+    <!-- Read Time (Bottom left on image) -->
+    <div class="absolute bottom-4 left-4 z-10">
+      <div
+        class="flex items-center space-x-1 px-2.5 py-1 bg-black/50 backdrop-blur-sm rounded-full"
+      >
+        <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </div>
   </div>
 
   <!-- Content -->
-  <div class="p-4 flex-1 flex flex-col">
-    <!-- Source and Date -->
-    <div class="flex items-center justify-between mb-2">
-      <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">
-        {{ article.source?.name || 'None' }}
-      </span>
-      <span class="text-xs text-gray-500">
-        {{ formatDate(article.published_at) }}
+  <div class="p-5 flex-1 flex flex-col">
+    <!-- Category Tag -->
+    <div class="mb-3">
+      <span
+        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-linear-to-r from-blue-100 to-blue-50 text-blue-600 border border-blue-200"
+      >
+        <svg class="w-3.5 h-3.5 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"
+          />
+        </svg>
+        {{ article.category_name || 'Unknown' }}
       </span>
     </div>
 
-    <!-- Title -->
-    <h3 class="text-lg font-bold text-gray-800 mb-2 line-clamp-2">
+    <!-- Title with Animated Underline -->
+    <h3
+      class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300 relative"
+    >
       {{ article.title }}
+      <span
+        class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-500 ease-out"
+      ></span>
     </h3>
 
     <!-- Description -->
-    <p class="text-sm text-gray-600 mb-4 line-clamp-3 flex-1">
-      {{ article.description || 'No description available.' }}
+    <p class="text-gray-600 mb-5 flex-1 leading-relaxed line-clamp-3">
+      {{ article.description || 'Stay informed with the latest updates on this developing story.' }}
     </p>
 
-    <!-- Author -->
-    <div class="flex items-center text-xs text-gray-500 mt-auto">
-      <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-        <path
-          fill-rule="evenodd"
-          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-          clip-rule="evenodd"
-        />
-      </svg>
-      <span>{{ article.category_name || 'Unknown Category' }}</span>
+    <!-- Metadata Bar -->
+    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+      <!-- Author & Country -->
+      <div class="flex items-center space-x-4">
+        <!-- Country Flag -->
+        <div class="flex items-center space-x-1.5">
+          <div
+            class="w-6 h-6 rounded-full bg-linear-to-r from-blue-100 to-purple-100 flex items-center justify-center shadow-sm"
+          ></div>
+          <span class="text-xs font-medium text-gray-700">{{
+            article.country_name || 'Unknown'
+          }}</span>
+        </div>
+
+        <!-- Date -->
+        <div class="flex items-center space-x-1.5">
+          <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span class="text-xs text-gray-500">{{ formatDate(article.published_at) }}</span>
+        </div>
+      </div>
+
+      <!-- Read More Button (Floating) -->
+      <button
+        (click)="openArticle(); $event.stopPropagation()"
+        class="relative inline-flex items-center justify-center w-10 h-10 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transform transition-all duration-300 group-hover:rotate-12"
+        aria-label="Read full article"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M14 5l7 7m0 0l-7 7m7-7H3"
+          />
+        </svg>
+      </button>
     </div>
+  </div>
+
+  <!-- Interactive Elements (Hover Effects) -->
+  <div class="absolute inset-0 pointer-events-none">
+    <!-- Glow Effect on Hover -->
+    <div
+      class="absolute inset-0 bg-linear-to-r from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/5 group-hover:via-purple-500/5 group-hover:to-pink-500/5 transition-all duration-700"
+    ></div>
   </div>
 </div>

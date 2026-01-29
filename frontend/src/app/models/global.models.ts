@@ -11,7 +11,7 @@ export interface NewsArticle {
   published_at: string;
   content: string;
   category_name?: string;
-  country?: string;
+  country_name?: string;
 }
 
 export interface NewsResponse {

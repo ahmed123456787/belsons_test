@@ -33,7 +33,7 @@ export class NewsListComponent implements OnInit {
 
   constructor(
     private newsService: NewsService,
-    private cdRef: ChangeDetectorRef // Add this
+    private cdRef: ChangeDetectorRef 
   ) {}
 
   ngOnInit(): void {

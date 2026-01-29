@@ -1,13 +1,6 @@
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 md:px-16 py-8">
   <div class="mb-8">
-    <h1 class="text-4xl font-bold text-gray-800 mb-2">Latest News Dashboard</h1>
-  </div>
-
-  <div class="bg-red-100 p-4 mb-4">
-    <div class="font-bold">DEBUG INFO:</div>
-    <div>Loading state: {{ loading }}</div>
-    <div>Loading type: {{ typeof loading }}</div>
-    <div>Articles count: {{ articles.length }}</div>
+    <h1 class="text-4xl font-bold text-blue-600 mb-2">Latest News Dashboard</h1>
   </div>
 
   <app-search-bar (searchQuery)="onSearch($event)"></app-search-bar>
@@ -19,5 +12,15 @@
 
   <div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
     <app-news-card *ngFor="let article of articles" [article]="article"></app-news-card>
+  </div>
+
+  <div *ngIf="!loading && totalItems > 0" class="flex justify-center mt-8">
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      (pageChange)="onPageChange($event)"
+    >
+    </app-pagination>
   </div>
 </div>
