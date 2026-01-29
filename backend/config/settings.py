@@ -131,6 +131,6 @@ CELERY_BEAT_SCHEDULE = {
     },
     'fetch-latest-news-every-hour': {
         'task': 'apps.news.tasks.fetch_latest_news_task',
-        'schedule': 60 * 60,  # every hour
+        'schedule': 60 * 60 * 24,  # every day
     },
 }
